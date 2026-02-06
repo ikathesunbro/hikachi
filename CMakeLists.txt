@@ -5,7 +5,7 @@ project(Hikachi VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(main "src/main.cpp" "src/main.h" "src/shader.cpp" "src/shader.h" "src/glad.c")
+add_executable(main "src/main.cpp" "src/main.h" "src/shader.cpp" "src/shader.h" "src/glad.c" "src/image.cpp")
 
 target_include_directories(main PRIVATE "C:/Dev/include")
 target_link_directories(main PRIVATE "C:/Dev/lib")
