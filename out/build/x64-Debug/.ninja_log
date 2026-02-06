@@ -1,7 +1,0 @@
-# ninja log v6
-8	1085	7921154152252730	CMakeFiles/main.dir/main.cpp.obj	5c00dd7b46cffd05
-17	1099	7921154152373077	CMakeFiles/main.dir/shader.cpp.obj	370eb53d82184331
-23	337	7921168007446198	CMakeFiles/main.dir/src/glad.c.obj	cabcaa0603cc84b1
-824	1124	7921169450163803	main.exe	d1b31f88bfda93df
-37	822	7921169442267162	CMakeFiles/main.dir/src/main.cpp.obj	f78324781810f85c
-17	831	7921168007385735	CMakeFiles/main.dir/src/shader.cpp.obj	846b38a1ecf10a92
