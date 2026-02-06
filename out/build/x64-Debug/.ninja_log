@@ -1,6 +1,7 @@
 # ninja log v6
-9	167	7921153247329465	CMakeFiles/main.dir/main.cpp.obj	5c00dd7b46cffd05
-26	199	7921153247494488	CMakeFiles/main.dir/shader.cpp.obj	370eb53d82184331
 8	1085	7921154152252730	CMakeFiles/main.dir/main.cpp.obj	5c00dd7b46cffd05
 17	1099	7921154152373077	CMakeFiles/main.dir/shader.cpp.obj	370eb53d82184331
 1100	1765	7921154163174010	main.exe	2881495fdfce33dd
+10	1117	7921156334263074	CMakeFiles/main.dir/src/main.cpp.obj	9ca3d68265f13171
+21	1134	7921156334430734	CMakeFiles/main.dir/src/shader.cpp.obj	787c2c1aa012f5b9
+1134	1609	7921156345556811	main.exe	abf438d3ac29dd95

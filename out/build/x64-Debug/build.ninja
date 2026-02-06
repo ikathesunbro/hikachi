@@ -49,19 +49,19 @@ cmake_ninja_workdir = C$:\Users\ikath\source\repos\hikachi\out\build\x64-Debug\
 
 build cmake_object_order_depends_target_main: phony || .
 
-build CMakeFiles\main.dir\main.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\Users\ikath\source\repos\hikachi\main.cpp || cmake_object_order_depends_target_main
+build CMakeFiles\main.dir\src\main.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\Users\ikath\source\repos\hikachi\src\main.cpp || cmake_object_order_depends_target_main
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20
   OBJECT_DIR = CMakeFiles\main.dir
-  OBJECT_FILE_DIR = CMakeFiles\main.dir
+  OBJECT_FILE_DIR = CMakeFiles\main.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\main.dir\
   TARGET_PDB = main.pdb
 
-build CMakeFiles\main.dir\shader.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\Users\ikath\source\repos\hikachi\shader.cpp || cmake_object_order_depends_target_main
+build CMakeFiles\main.dir\src\shader.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\Users\ikath\source\repos\hikachi\src\shader.cpp || cmake_object_order_depends_target_main
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20
   OBJECT_DIR = CMakeFiles\main.dir
-  OBJECT_FILE_DIR = CMakeFiles\main.dir
+  OBJECT_FILE_DIR = CMakeFiles\main.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\main.dir\
   TARGET_PDB = main.pdb
 
@@ -73,7 +73,7 @@ build CMakeFiles\main.dir\shader.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:
 #############################################
 # Link the executable main.exe
 
-build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles\main.dir\main.cpp.obj CMakeFiles\main.dir\shader.cpp.obj
+build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles\main.dir\src\main.cpp.obj CMakeFiles\main.dir\src\shader.cpp.obj
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
