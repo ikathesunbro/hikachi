@@ -13,6 +13,8 @@
 const unsigned int SRC_WIDTH{ 800 };
 const unsigned int SRC_HEIGHT{ 600 };
 
+float mixValue{ 0.0f };
+
 // Data
 float vertices[] = {
     // Position          // Colors           // Texture
