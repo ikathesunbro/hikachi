@@ -28,6 +28,7 @@ int main()
 		return -1;		
 	}
 
+
 	Shader shader("shader/default.vert", "shader/default.frag");
 
 	unsigned int texture1, texture2;
@@ -58,11 +59,12 @@ int main()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
 	stbi_set_flip_vertically_on_load(true);
 	texData = stbi_load("textures/awesomeface.png", &texWidth, &texHeight, &nrChannels, 0);
+	stbi_set_flip_vertically_on_load(false);
 
 	if (texData)
 	{
@@ -79,7 +81,7 @@ int main()
 	shader.use();
 	shader.setInt("texture1", 0);
 	shader.setInt("texture2", 1);
-
+	
 	glUseProgram(0);
 
 	unsigned int VBO, VAO, EBO;
@@ -95,26 +97,20 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
+	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
 
-		glClearColor(0.3f, 0.4f, 0.43f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		shader.use();
-
-		shader.setFloat("mixValue", mixValue);
+		glClearColor(0.95f, 0.54f, 0.53f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
@@ -122,9 +118,25 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		
+		shader.use();
+		shader.setFloat("mixValue", mixValue);
+	
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians((float)(glfwGetTime() * 100)), glm::vec3(0.4f, 0.3f, 1.0f));
+		model = glm::scale(model, glm::vec3((float)(sin(glfwGetTime() * 0.5) * 0.5 + 0.5)));
 
+		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.05f, 100.0f);
+
+		shader.setMat4f("model", model);
+		shader.setMat4f("view", view);
+		shader.setMat4f("projection", projection);
+		
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
