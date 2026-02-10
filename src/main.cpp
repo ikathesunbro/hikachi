@@ -8,7 +8,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "Hikachi", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "TEST VERSION", NULL, NULL);
 
 	if (!window)
 	{
@@ -109,7 +109,7 @@ int main()
 	{
 		processInput(window);
 
-		glClearColor(0.95f, 0.54f, 0.53f, 1.0f);
+		glClearColor(1.0f, 0.94f, 0.98f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -123,19 +123,22 @@ int main()
 	
 		glBindVertexArray(VAO);
 		
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians((float)(glfwGetTime() * 100)), glm::vec3(0.4f, 0.3f, 1.0f));
-		model = glm::scale(model, glm::vec3((float)(sin(glfwGetTime() * 0.5) * 0.5 + 0.5)));
+		for (unsigned int i = 0; i < sizeof(positions) / sizeof(glm::vec3); i++)
+		{
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), positions[i]);
+			model = glm::rotate(model, glm::radians((float)((glfwGetTime() + i) * 100)), glm::vec3(0.4f, 0.3f, 1.0f));
+			model = glm::scale(model, glm::vec3((float)(sin(glfwGetTime() * 0.5) * 0.2 + 0.8)));
 
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
 
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.05f, 100.0f);
+			glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.05f, 500.0f);
 
-		shader.setMat4f("model", model);
-		shader.setMat4f("view", view);
-		shader.setMat4f("projection", projection);
-		
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+			shader.setMat4f("model", model);
+			shader.setMat4f("view", view);
+			shader.setMat4f("projection", projection);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
