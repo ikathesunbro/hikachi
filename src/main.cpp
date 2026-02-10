@@ -7,6 +7,10 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+	glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
+	glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
 
 	GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "TEST VERSION", NULL, NULL);
 
@@ -105,11 +109,15 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
+	setRandomPositions(positions);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
 
-		glClearColor(1.0f, 0.94f, 0.98f, 1.0f);
+		glfwSetWindowAttrib(window, GLFW_FOCUSED, GLFW_FALSE);
+
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -129,9 +137,9 @@ int main()
 			model = glm::rotate(model, glm::radians((float)((glfwGetTime() + i) * 100)), glm::vec3(0.4f, 0.3f, 1.0f));
 			model = glm::scale(model, glm::vec3((float)(sin(glfwGetTime() * 0.5) * 0.2 + 0.8)));
 
-			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
+			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -13.0f + (float)(sin(glfwGetTime() * 0.1) * 10)));
 
-			glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.05f, 500.0f);
+			glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.05f, 500.0f);
 
 			shader.setMat4f("model", model);
 			shader.setMat4f("view", view);
@@ -175,4 +183,19 @@ void processInput(GLFWwindow* window)
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void setRandomPositions(glm::vec3 positions[])
+{
+	srand(static_cast <unsigned> (time(0)));
+
+	auto random = [](float scale)
+		{
+			return (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 0.5f) * scale;
+		};
+
+	for (unsigned int i = 0; i < 20; i++)
+	{
+		positions[i] = glm::vec3(random(10.0f), random(10.0f), random(10.0f));
+	}
 }

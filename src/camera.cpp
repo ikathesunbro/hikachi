@@ -12,7 +12,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 lookAt)
 	camFront = glm::cross(camRight, camUp);
 }
 
-void setMVP(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+void Camera::setMVP(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
 	shader.setMat4f("model", model);
 	shader.setMat4f("view", view);
