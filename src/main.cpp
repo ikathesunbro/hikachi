@@ -13,7 +13,7 @@ int main()
 	glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
 
 	GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "TEST VERSION", NULL, NULL);
-
+	
 	if (!window)
 	{
 		std::cout << "Failed to create window :(" << std::endl;
@@ -109,13 +109,15 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
-	setRandomPositions(positions);
+	setRandomPositions(positions, 100, 30);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
 
-		glfwSetWindowAttrib(window, GLFW_FOCUSED, GLFW_FALSE);
+		float radius = 30.0f;
+		float camX = sin(glfwGetTime()) * radius;
+		float camZ = cos(glfwGetTime()) * radius;
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -128,18 +130,19 @@ int main()
 		
 		shader.use();
 		shader.setFloat("mixValue", mixValue);
+		shader.setFloat("time", glfwGetTime());
 	
 		glBindVertexArray(VAO);
 		
-		for (unsigned int i = 0; i < sizeof(positions) / sizeof(glm::vec3); i++)
+		for (unsigned int i = 0; i < positions.size(); i++)
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), positions[i]);
 			model = glm::rotate(model, glm::radians((float)((glfwGetTime() + i) * 100)), glm::vec3(0.4f, 0.3f, 1.0f));
-			model = glm::scale(model, glm::vec3((float)(sin(glfwGetTime() * 0.5) * 0.2 + 0.8)));
+			model = glm::scale(model, glm::vec3((float)(sin(glfwGetTime() * 0.5) * 0.2 + 1.4)));
 
-			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -13.0f + (float)(sin(glfwGetTime() * 0.1) * 10)));
+			glm::mat4 view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(sin(glfwGetTime()) * 5), glm::vec3(0.0f, 1.0f, 0.0f));
 
-			glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.05f, 500.0f);
+			glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1190.0f, 0.05f, 500.0f);
 
 			shader.setMat4f("model", model);
 			shader.setMat4f("view", view);
@@ -185,7 +188,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void setRandomPositions(glm::vec3 positions[])
+void setRandomPositions(std::vector<glm::vec3> &positions, unsigned int count, float area)
 {
 	srand(static_cast <unsigned> (time(0)));
 
@@ -194,8 +197,8 @@ void setRandomPositions(glm::vec3 positions[])
 			return (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 0.5f) * scale;
 		};
 
-	for (unsigned int i = 0; i < 20; i++)
+	for (unsigned int i = 0; i < count; i++)
 	{
-		positions[i] = glm::vec3(random(10.0f), random(10.0f), random(10.0f));
+		positions.push_back(glm::vec3(random(area), random(area), random(area)));
 	}
 }
